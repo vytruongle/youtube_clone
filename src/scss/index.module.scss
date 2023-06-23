@@ -1,0 +1,29 @@
+.scroll {
+  //custom scrollbar
+  /* width */
+  overflow-y: auto;
+  height: 100%;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: rgb(142, 149, 160);
+    border-radius: 10px;
+  }
+}
+
+.noscroll {
+  overflow-y: auto;
+  height: 100%;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
