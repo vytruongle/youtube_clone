@@ -8,6 +8,7 @@ import VideoDetail from "../pages/VideoDetail";
 import Search from "../pages/Search";
 import VideoWatched from "../pages/VideoWatched";
 import VideoLiked from "../pages/VideoLiked";
+import VideoWatchLater from "../pages/VideoWatchLater";
 
 const Router = () => {
   const element = useRoutes([
@@ -22,6 +23,7 @@ const Router = () => {
         { path: "/result/:q", element: <Search /> },
         { path: "/feed/history", element: <VideoWatched /> },
         { path: "/playlist", element: <VideoLiked /> },
+        { path: "/later-playlist", element: <VideoWatchLater /> },
         {
           path: "/ca-nhan",
           element: <Personal />,

@@ -1,20 +1,22 @@
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "antd";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { removeVideoLiked } from "../store/get_video/slice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { removeVideoWatchLater } from "../store/get_video/slice";
 
-const VideoLiked = () => {
-  const { videoLiked } = useSelector((state) => state.manageVideos);
+const VideoWatchLater = () => {
+  const { videoWatchLater } = useSelector((state) => state.manageVideos);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   return (
     <div className="bg-black">
       <div className="3xl:max-w-screen-3xl 2xl:max-w-screen-2xl xl:max-w-screen-xl lg:max-w-screen-lg md:max-w-screen-md sm:max-w-screen-sm ssm:max-w-screen-ssm mx-auto mt-24 py-4 px-24 h-screen max-ssm:h-full">
-        <h1 className="text-white font-medium text-lg py-3">Video đã thích</h1>
-        {videoLiked?.map((video) => {
+        <h1 className="text-white font-medium text-lg py-3">
+          Danh sách video xem sau
+        </h1>
+        {videoWatchLater?.map((video) => {
           return (
             <div
               className="xl:flex flex-wrap pb-4 rounded-xl shadow cursor-pointer max-lg:flex max-ssm:flex max-md:flex sssm:max-w-screen-sssm md:max-w-screen-md xl:max-w-screen-2xl"
@@ -75,13 +77,13 @@ const VideoLiked = () => {
                     {video?.viewCount} lượt xem
                   </p>
                 </div>
-                <div className="py-2">
-                  <p
-                    className="text-gray-400 text-xs truncate max-sssm:w-1/6"
-                    onClick={() => {
-                      navigate(`/${video?.id}`);
-                    }}
-                  >
+                <div
+                  className="py-2"
+                  onClick={() => {
+                    navigate(`/${video?.id}`);
+                  }}
+                >
+                  <p className="text-gray-400 text-xs truncate max-sssm:w-1/6">
                     {video?.description}
                   </p>
                 </div>
@@ -90,7 +92,7 @@ const VideoLiked = () => {
                 <div
                   className="text-white font-medium text-lg text-end"
                   onClick={() => {
-                    dispatch(removeVideoLiked(video?.id));
+                    dispatch(removeVideoWatchLater(video?.id));
                   }}
                 >
                   <FontAwesomeIcon icon={faTrash} />
@@ -104,4 +106,4 @@ const VideoLiked = () => {
   );
 };
 
-export default VideoLiked;
+export default VideoWatchLater;

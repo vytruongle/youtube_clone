@@ -7,18 +7,27 @@ import {
 } from "../store/get_channel/thunkAction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faBell as faEmptydBell } from "@fortawesome/free-regular-svg-icons";
 import { Tooltip } from "antd";
 import dateFormat from "dateformat";
+import {
+  getChannelRegsiter,
+  removeChannelRegister,
+} from "../store/get_channel/slice";
 
 const Channel = () => {
   let { channelId } = useParams();
   const navigate = useNavigate();
   const [isSel, setSel] = useState(0);
   const dispatch = useDispatch();
-  const { channel, channelVideos } = useSelector(
+  const { channel, channelVideos, channelRegsitered } = useSelector(
     (state) => state.manageChannels
   );
-
+  // find id channel in playlist channel register
+  const indexChannel = channelRegsitered?.findIndex(
+    (channel) => channel.channelId === channelId
+  );
+  const idChannelReg = indexChannel > -1 ? true : false;
   useEffect(() => {
     dispatch(getChannelDetails(channelId));
     dispatch(getChannelVideos(channelId));
@@ -64,11 +73,39 @@ const Channel = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4 bg-[#272727] px-4 py-1 rounded-3xl">
-              <div className="text-lg text-white">
-                <FontAwesomeIcon icon={faBell} />
-              </div>
-              <p className="text-white text-sm font-medium">Đã đăng ký</p>
+            <div className="flex rounded-md shadow-sm">
+              <button
+                type="button"
+                className="px-4 py-2 my-auto text-sm font-medium text-white bg-[#2f2e2f]  rounded-3xl hover:opacity-90"
+                onClick={() => {
+                  if (!idChannelReg) {
+                    dispatch(
+                      getChannelRegsiter({
+                        channelId: channelId,
+                        channelImg:
+                          channel[0]?.snippet?.thumbnails?.default?.url,
+                        channelTitle: channel[0]?.snippet?.title,
+                      })
+                    );
+                  } else {
+                    dispatch(removeChannelRegister(channelId));
+                  }
+                }}
+              >
+                <div className="text-white text-lg font-medium pr-2">
+                  {idChannelReg ? (
+                    <div className="flex flex-wrap items-center gap-3">
+                      <FontAwesomeIcon icon={faBell} />
+                      <p className="text-white text-sm">Đã đăng ký</p>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-3 h-full">
+                      <FontAwesomeIcon icon={faEmptydBell} />
+                      <p className="text-white text-sm">Chưa đăng ký</p>
+                    </div>
+                  )}
+                </div>
+              </button>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import {
 
 const localVidWatched = JSON.parse(localStorage.getItem("videoWatched"));
 const localVidLiked = JSON.parse(localStorage.getItem("videoLiked"));
+const localVidWatchLater = JSON.parse(localStorage.getItem("videoWatchLater"));
 
 const initialState = {
   videos: [],
@@ -14,6 +15,7 @@ const initialState = {
   videoComment: [],
   videoWatched: localVidWatched || [],
   videoLiked: localVidLiked || [],
+  videoWatchLater: localVidWatchLater || [],
   isLoading: false,
 };
 
@@ -36,6 +38,25 @@ const manageVideoSlice = createSlice({
       if (indexLiked > -1) {
         state.videoLiked.splice(indexLiked, 1);
         localStorage.setItem("videoLiked", JSON.stringify(state.videoLiked));
+      }
+    },
+    getVideoWatchLater: (state, action) => {
+      state.videoWatchLater.push(action.payload);
+      localStorage.setItem(
+        "videoWatchLater",
+        JSON.stringify(state.videoWatchLater)
+      );
+    },
+    removeVideoWatchLater: (state, action) => {
+      const indexLiked = state?.videoWatchLater?.findIndex(
+        (video) => video.id === action.payload
+      );
+      if (indexLiked > -1) {
+        state.videoWatchLater.splice(indexLiked, 1);
+        localStorage.setItem(
+          "videoWatchLater",
+          JSON.stringify(state.videoWatchLater)
+        );
       }
     },
   },
@@ -80,5 +101,10 @@ const manageVideoSlice = createSlice({
 });
 
 export const manageVideoReducer = manageVideoSlice.reducer;
-export const { getVideoWatched, getVideoLiked, removeVideoLiked } =
-  manageVideoSlice.actions;
+export const {
+  getVideoWatched,
+  getVideoLiked,
+  removeVideoLiked,
+  getVideoWatchLater,
+  removeVideoWatchLater,
+} = manageVideoSlice.actions;

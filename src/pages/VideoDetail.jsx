@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import clsx from "clsx";
 import { useNavigate, useParams } from "react-router";
 import dateFormat from "dateformat";
 import {
@@ -14,15 +15,29 @@ import {
   faAngleUp,
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { LikeFilled } from "@ant-design/icons";
+import { faBell as faFilledBell } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp as faFilledThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { getChannelDetails } from "../store/get_channel/thunkAction";
 import { Tooltip } from "antd";
-import { faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
+import {
+  faBell,
+  faClock,
+  faThumbsDown,
+  faThumbsUp,
+} from "@fortawesome/free-regular-svg-icons";
 import {
   getVideoLiked,
+  getVideoWatchLater,
   getVideoWatched,
   removeVideoLiked,
 } from "../store/get_video/slice";
+
+// css
+import styles from "../scss/VideoDetail.module.scss";
+import {
+  getChannelRegsiter,
+  removeChannelRegister,
+} from "../store/get_channel/slice";
 
 const VideoDetail = () => {
   let { videoId } = useParams();
@@ -32,10 +47,16 @@ const VideoDetail = () => {
   const { videoDetail, videos, videoComment } = useSelector(
     (state) => state.manageVideos
   );
-  const { channel } = useSelector((state) => state.manageChannels);
+  const { channel, channelRegsitered } = useSelector(
+    (state) => state.manageChannels
+  );
   const vid = videoDetail[0];
   const localVidWatched = JSON.parse(localStorage.getItem("videoWatched"));
   const localVidLiked = JSON.parse(localStorage.getItem("videoLiked"));
+  const localVidWatchLater = JSON.parse(
+    localStorage.getItem("videoWatchLater")
+  );
+
   // console.log(vid?.snippet?.channelId);
   // console.log(channel);
 
@@ -45,7 +66,17 @@ const VideoDetail = () => {
   // find id video in playlist liked
   const indexLiked = localVidLiked?.findIndex((video) => video.id === vid?.id);
   const idVidLike = indexLiked > -1 ? true : false;
-  console.log();
+  // find id video in playlist later watch
+  const indexLater = localVidWatchLater?.findIndex(
+    (video) => video.id === vid?.id
+  );
+  const idVidLater = indexLater > -1 ? true : false;
+  // find id channel in playlist channel register
+  const indexChannel = channelRegsitered?.findIndex(
+    (channel) => channel.channelId === vid?.snippet?.channelId
+  );
+  const idChannelReg = indexChannel > -1 ? true : false;
+  console.log(idChannelReg);
   useEffect(() => {
     dispatch(
       getVideoDetails({
@@ -76,6 +107,7 @@ const VideoDetail = () => {
           id: vid?.id,
           imgVideo: vid?.snippet?.thumbnails?.medium?.url,
           title: vid?.snippet?.title,
+          channelId: vid?.snippet?.channelId,
           channelTitle: vid?.snippet?.channelTitle,
           viewCount: vid?.statistics?.viewCount,
           description: vid?.snippet?.description,
@@ -101,7 +133,7 @@ const VideoDetail = () => {
               <h1 className="text-white font-medium text-xl pt-3">
                 {vid?.snippet?.title}
               </h1>
-              <div className="flex flex-wrap items-center justify-between gap-2 py-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 py-3 ">
                 <div className="flex items-center flex-wrap gap-3">
                   <div className="rounded-[50%]">
                     <img
@@ -139,50 +171,94 @@ const VideoDetail = () => {
                     </p>
                   </div>
                 </div>
-                <div className="inline-flex rounded-md shadow-sm" role="group">
-                  <button
-                    type="button"
-                    className="px-2.5 py-2 text-sm font-medium text-white bg-[#2f2e2f]  rounded-l-3xl hover:opacity-90"
-                    onClick={() => {
-                      if (!idVidLike) {
-                        dispatch(
-                          getVideoLiked({
-                            id: vid?.id,
-                            imgVideo: vid?.snippet?.thumbnails?.medium?.url,
-                            title: vid?.snippet?.title,
-                            channelTitle: vid?.snippet?.channelTitle,
-                            viewCount: vid?.statistics?.viewCount,
-                            description: vid?.snippet?.description,
-                          })
-                        );
-                      } else {
-                        dispatch(removeVideoLiked(vid?.id));
-                      }
-                    }}
+                <div className="flex items-center gap-4">
+                  <div
+                    className="inline-flex rounded-md shadow-sm"
+                    role="group"
                   >
-                    <span className="text-white text-lg font-medium pr-2">
-                      {idVidLike ? (
-                        <LikeFilled className="mb-2" />
-                      ) : (
-                        <FontAwesomeIcon icon={faThumbsUp} />
-                      )}
-                    </span>
-                    {vid?.statistics?.likeCount}
-                  </button>
-                  <button
-                    type="button"
-                    className="px-1 bg-[#2f2e2f] text-gray-400 text-xl"
-                  >
-                    |
-                  </button>
-                  <button
-                    type="button"
-                    className="px-4 py-2 text-sm font-medium text-white bg-[#2f2e2f] rounded-r-3xl hover:opacity-90 "
-                  >
-                    <div className="text-white font-medium text-lg">
-                      <FontAwesomeIcon icon={faThumbsDown} />
-                    </div>
-                  </button>
+                    <button
+                      type="button"
+                      className="px-2.5 py-2 text-sm font-medium text-white bg-[#2f2e2f]  rounded-l-3xl hover:opacity-90"
+                      onClick={() => {
+                        if (!idVidLike) {
+                          dispatch(
+                            getVideoLiked({
+                              id: vid?.id,
+                              imgVideo: vid?.snippet?.thumbnails?.medium?.url,
+                              title: vid?.snippet?.title,
+                              channelId: vid?.snippet?.channelId,
+                              channelTitle: vid?.snippet?.channelTitle,
+                              viewCount: vid?.statistics?.viewCount,
+                              description: vid?.snippet?.description,
+                            })
+                          );
+                        } else {
+                          dispatch(removeVideoLiked(vid?.id));
+                        }
+                      }}
+                    >
+                      <div className="text-white text-lg font-medium flex items-center gap-2">
+                        {idVidLike ? (
+                          <FontAwesomeIcon icon={faFilledThumbsUp} />
+                        ) : (
+                          <FontAwesomeIcon icon={faThumbsUp} />
+                        )}
+                        <p className="text-sm font-normal">
+                          {vid?.statistics?.likeCount}
+                        </p>
+                      </div>
+                    </button>
+                    <button
+                      type="button"
+                      className="px-1 bg-[#2f2e2f] text-gray-400 text-xl"
+                    >
+                      |
+                    </button>
+                    <button
+                      type="button"
+                      className="px-4 py-2 text-sm font-medium text-white bg-[#2f2e2f] rounded-r-3xl hover:opacity-90 "
+                    >
+                      <div className="text-white font-medium text-lg">
+                        <FontAwesomeIcon icon={faThumbsDown} />
+                      </div>
+                    </button>
+                  </div>
+                  <div className="flex rounded-md shadow-sm">
+                    <button
+                      type="button"
+                      className="px-4 py-2 my-auto text-sm font-medium text-white bg-[#2f2e2f]  rounded-3xl hover:opacity-90"
+                      onClick={() => {
+                        if (!idChannelReg) {
+                          dispatch(
+                            getChannelRegsiter({
+                              channelId: vid?.snippet?.channelId,
+                              channelImg:
+                                channel[0]?.snippet?.thumbnails?.default?.url,
+                              channelTitle: vid?.snippet?.channelTitle,
+                            })
+                          );
+                        } else {
+                          dispatch(
+                            removeChannelRegister(vid?.snippet?.channelId)
+                          );
+                        }
+                      }}
+                    >
+                      <div className="text-white text-lg font-medium pr-2">
+                        {idChannelReg ? (
+                          <div className="flex flex-wrap items-center gap-3">
+                            <FontAwesomeIcon icon={faFilledBell} />
+                            <p className="text-white text-sm">Đã đăng ký</p>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-3 h-full">
+                            <FontAwesomeIcon icon={faBell} />
+                            <p className="text-white text-sm">Chưa đăng ký</p>
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -303,16 +379,42 @@ const VideoDetail = () => {
                   <div
                     className="xl:flex flex-wrap rounded-xl shadow cursor-pointer md:block sssm:max-w-screen-sssm md:max-w-screen-md xl:max-w-screen-2xl"
                     key={video?.id?.videoId}
-                    onClick={() => {
-                      navigate(`/${video?.id?.videoId}`);
-                    }}
                   >
-                    <div className="basis-1/2">
+                    <div
+                      className={clsx(styles.thumbnails, "basis-1/2 relative")}
+                    >
                       <img
                         className="rounded-md hover:scale-105 transition-all duration-300 hover:duration-300 w-44"
                         src={video?.snippet?.thumbnails?.medium?.url}
                         alt={video?.snippet?.description}
+                        onClick={() => {
+                          navigate(`/${video?.id?.videoId}`);
+                        }}
                       />
+                      <div
+                        className={clsx(
+                          styles.clockIcon,
+                          "absolute top-0 right-[15%] text-white text-lg bg-[#2f2e2f] rounded-md px-2 py-1 my-1 bg-opacity-50"
+                        )}
+                        onClick={() => {
+                          if (!idVidLater) {
+                            dispatch(
+                              getVideoWatchLater({
+                                id: video?.id?.videoId,
+                                imgVideo:
+                                  video?.snippet?.thumbnails?.medium?.url,
+                                title: video?.snippet?.title,
+                                channelId: video?.snippet?.channelId,
+                                channelTitle: video?.snippet?.channelTitle,
+                                viewCount: video?.statistics?.viewCount,
+                                description: video?.snippet?.description,
+                              })
+                            );
+                          }
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faClock} />
+                      </div>
                     </div>
                     <div className="py-4 px-1 basis-1/2 w-1/2">
                       <div>
@@ -321,7 +423,12 @@ const VideoDetail = () => {
                           placement="rightTop"
                           title={video?.snippet?.title}
                         >
-                          <h5 className="mb-2 text-sm font-semibold tracking-tight text-white whitespace-nowrap text-ellipsis overflow-hidden">
+                          <h5
+                            className="mb-2 text-sm font-semibold tracking-tight text-white whitespace-nowrap text-ellipsis overflow-hidden"
+                            onClick={() => {
+                              navigate(`/${video?.id?.videoId}`);
+                            }}
+                          >
                             {video?.snippet?.title}
                           </h5>
                         </Tooltip>
@@ -335,7 +442,12 @@ const VideoDetail = () => {
                           {video?.snippet?.channelTitle}
                         </p>
                       </Tooltip>
-                      <p className="mb-1 font-normal text-xs text-gray-400">
+                      <p
+                        className="mb-1 font-normal text-xs text-gray-400"
+                        onClick={() => {
+                          navigate(`/${video?.id?.videoId}`);
+                        }}
+                      >
                         Ngày đăng tải<span> </span>
                         {dateFormat(video?.snippet?.publishTime, "dd/mm/yyyy")}
                       </p>

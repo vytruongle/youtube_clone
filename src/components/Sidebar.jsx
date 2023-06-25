@@ -21,11 +21,13 @@ import {
 
 // styles
 import styles from "../scss/index.module.scss";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
   const location = useLocation().pathname;
   const [isBlur, setBlur] = useState(false);
   const [isHide, setIsHide] = useState(true);
+  const { channelRegsitered } = useSelector((state) => state.manageChannels);
 
   return (
     <div>
@@ -155,73 +157,35 @@ const Sidebar = () => {
                     </span>
                   </div>
                   <ul className="ml-4">
-                    <li
-                      className={
-                        "/UCmXmlB4-HJytD7wek0Uo97A/@JavaScriptMastery" ===
-                        location
-                          ? "bg-white bg-opacity-25 rounded-lg"
-                          : "hover:bg-white hover:bg-opacity-25 rounded-lg"
-                      }
-                    >
-                      <Link to={`/UCmXmlB4-HJytD7wek0Uo97A/@JavaScriptMastery`}>
-                        <div className="flex items-center p-2">
-                          <div className="w-8">
-                            <img
-                              className="rounded-[50%] w-full"
-                              src="https://yt3.ggpht.com/wg1TITEoPfxvBGfzuqWyt3bqm_qu35ZhMswUv3feetU3xNX_6wsAXZF40OlPIgY4TmqbqCmAZ1U=s68-c-k-c0x00ffffff-no-rj"
-                              alt="https://yt3.ggpht.com/wg1TITEoPfxvBGfzuqWyt3bqm_qu35ZhMswUv3feetU3xNX_6wsAXZF40OlPIgY4TmqbqCmAZ1U=s68-c-k-c0x00ffffff-no-rj"
-                            />
-                          </div>
-                          <span className="ml-6 text-white text-sm font-normal">
-                            JavaScript Mastery
-                          </span>
-                        </div>
-                      </Link>
-                    </li>
-                    <li
-                      className={
-                        "/UCtowbSVJlDLjgs-5qsznSTA/@CamBongDa" === location
-                          ? "bg-white bg-opacity-25 rounded-lg"
-                          : "hover:bg-white hover:bg-opacity-25 rounded-lg"
-                      }
-                    >
-                      <Link to={`/UCtowbSVJlDLjgs-5qsznSTA/@CamBongDa`}>
-                        <div className="flex items-center p-2">
-                          <div className="w-8">
-                            <img
-                              className="rounded-[50%] w-full"
-                              src="https://yt3.ggpht.com/ytc/AGIKgqM7iJU6QYRW2aHWWnREVqmR-ZO3nhKndOLwl_-bDg=s88-c-k-c0x00ffffff-no-rj"
-                              alt="https://yt3.ggpht.com/ytc/AGIKgqM7iJU6QYRW2aHWWnREVqmR-ZO3nhKndOLwl_-bDg=s88-c-k-c0x00ffffff-no-rj"
-                            />
-                          </div>
-                          <span className="ml-6 text-white font-normal">
-                            Cảm bóng đá
-                          </span>
-                        </div>
-                      </Link>
-                    </li>
-                    <li
-                      className={
-                        `/UCj06sjVmkCDEapk8JwBg06A/@Optimus96` === location
-                          ? "bg-white bg-opacity-25 rounded-lg"
-                          : "hover:bg-white hover:bg-opacity-25 rounded-lg"
-                      }
-                    >
-                      <Link to={`/UCj06sjVmkCDEapk8JwBg06A/@Optimus96`}>
-                        <div className="flex items-center p-2">
-                          <div className="w-8">
-                            <img
-                              className="rounded-[50%] w-full"
-                              src="https://yt3.ggpht.com/ytc/AGIKgqM1QkmiVmw_UiEVR2tsdyLdFN9Ysa43gUK1XDBmmw=s68-c-k-c0x00ffffff-no-rj"
-                              alt="https://yt3.ggpht.com/ytc/AGIKgqM1QkmiVmw_UiEVR2tsdyLdFN9Ysa43gUK1XDBmmw=s68-c-k-c0x00ffffff-no-rj"
-                            />
-                          </div>
-                          <span className="ml-6 text-white font-normal">
-                            Optimus
-                          </span>
-                        </div>
-                      </Link>
-                    </li>
+                    {channelRegsitered?.map((channel) => {
+                      return (
+                        <li
+                          className={
+                            `/${channel?.channelId}/@${channel?.channelTitle}` ===
+                            location
+                              ? "bg-white bg-opacity-25 rounded-lg"
+                              : "hover:bg-white hover:bg-opacity-25 rounded-lg"
+                          }
+                        >
+                          <Link
+                            to={`/${channel?.channelId}/@${channel?.channelTitle}`}
+                          >
+                            <div className="flex items-center p-2">
+                              <div className="w-8">
+                                <img
+                                  className="rounded-[50%] w-full"
+                                  src={channel?.channelImg}
+                                  alt={channel?.channelImg}
+                                />
+                              </div>
+                              <span className="ml-6 text-white font-normal">
+                                {channel?.channelTitle}
+                              </span>
+                            </div>
+                          </Link>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               </li>
@@ -247,12 +211,12 @@ const Sidebar = () => {
               </li>
               <li
                 className={
-                  location === false
+                  location === "/later-playlist"
                     ? "bg-white bg-opacity-25 rounded-lg"
                     : "hover:bg-white hover:bg-opacity-25 rounded-lg"
                 }
               >
-                <Link>
+                <Link to="/later-playlist">
                   <div className="flex items-center p-2">
                     <div className="text-white text-2xl font-bold">
                       <FontAwesomeIcon icon={faClock} />

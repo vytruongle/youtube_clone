@@ -1,0 +1,12 @@
+.thumbnails {
+  .clockIcon {
+    display: none;
+    transition: all 0.3s;
+  }
+  &:hover {
+    .clockIcon {
+      display: block;
+      transition: all 0.3s;
+    }
+  }
+}
