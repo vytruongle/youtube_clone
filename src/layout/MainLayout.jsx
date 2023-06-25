@@ -9,7 +9,7 @@ const MainLayout = () => {
       <div className="flex-1">
         <Sidebar />
       </div>
-      <div className="flex max-ssm:basis-[87.5%] md:basis-[90%] lg:basis-[92%] xl:basis-[94%] 2xl:basis-8/9 3xl:basis-[98.5%] flex-col h-full">
+      <div className="flex max-ssm:basis-[87.5%] md:basis-[94.5%] lg:basis-[95.4%] xl:basis-[97%] 2xl:basis-[97%] 3xl:basis-[98.5%] flex-col h-full">
         <Header />
         <div className="flex flex-col h-full">
           <Outlet />

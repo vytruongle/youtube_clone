@@ -12,7 +12,7 @@ const Header = () => {
         <div className="3xl:max-w-screen-3xl 2xl:max-w-screen-2xl xl:max-w-screen-xl lg:max-w-screen-lg md:max-w-screen-md sm:max-w-screen-sm ssm:max-w-screen-ssm flex flex-wrap items-center justify-between mx-auto p-4">
           <div className="flex items-center w-full">
             <div className="sssm:basis-1/5 sssm:block sssm:w-1/6 md:hidden lg:block lg:basis-1/5"></div>
-            <div className="relative w-full flex-1">
+            <div className="relative w-full flex-1 max-sssm:px-9">
               <input
                 type="search"
                 id="search-dropdown"
