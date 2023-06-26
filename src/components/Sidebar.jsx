@@ -36,8 +36,8 @@ const Sidebar = () => {
           id="default-sidebar"
           className={
             isHide
-              ? "fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-0  ease-in duration-300 max-ssm:h-full "
-              : "fixed top-0 left-[100%] z-40 w-64 h-screen transition-transform md:-translate-x-0 sm:-translate-x-1/4  duration-300 "
+              ? "fixed top-0 left-0 z-40 w-64 h-screen duration-500 max-ssm:h-full overflow-x-hidden"
+              : "fixed top-0 -left-64 z-40 w-64 h-screen md:-translate-x-0 sm:-translate-x-1/4 duration-500 overflow-x-hidden"
           }
           aria-label="Sidebar"
         >
@@ -333,10 +333,14 @@ const Sidebar = () => {
         </aside>
       </div>
 
-      <div className={isHide ? "hidden" : "block"}>
+      <div>
         <aside
           id="default-sidebar"
-          className="fixed top-0 left-0 z-40 w-12 h-screen -translate-x-0 transition-transform max-ssm:h-full"
+          className={
+            isHide
+              ? "fixed top-0 -left-12 z-40 w-12 h-screen duration-500 transition-transform max-ssm:h-full"
+              : "fixed top-0 left-0 z-40 w-12 h-screen duration-500 transition-transform max-ssm:h-full"
+          }
           aria-label="Sidebar"
         >
           <div
