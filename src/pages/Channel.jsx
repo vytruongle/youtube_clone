@@ -36,22 +36,26 @@ const Channel = () => {
   return (
     <div className="bg-black pt-16">
       <div className="h-[300px]">
-        <img
-          className="w-full h-full object-cover"
-          src={channel[0]?.brandingSettings?.image?.bannerExternalUrl}
-          alt={channel[0]?.brandingSettings?.image?.bannerExternalUrl}
-        />
+        {channel[0]?.brandingSettings?.image?.bannerExternalUrl ? (
+          <img
+            className="w-full h-full object-cover"
+            src={channel[0]?.brandingSettings?.image?.bannerExternalUrl}
+            alt={channel[0]?.brandingSettings?.image?.bannerExternalUrl}
+          />
+        ) : (
+          <div className="w-full bg-black"></div>
+        )}
       </div>
       <div className="3xl:max-w-screen-3xl 2xl:max-w-screen-2xl xl:max-w-screen-xl lg:max-w-screen-lg md:max-w-screen-md sm:max-w-screen-sm ssm:max-w-screen-ssm mx-auto p-4">
-        <div className="py-4 px-6 flex flex-wrap items-center gap-6">
+        <div className="py-4 px-8 flex  items-center gap-6">
           <div>
             <img
-              className="rounded-[50%] w-32"
-              src={channel[0]?.snippet?.thumbnails?.high?.url}
-              alt={channel[0]?.snippet?.thumbnails?.high?.url}
+              className="rounded-[50%] w-32 max-ssm:w-24"
+              src={channel[0]?.snippet?.thumbnails?.default?.url}
+              alt={channel[0]?.snippet?.thumbnails?.default?.url}
             />
           </div>
-          <div className="flex items-center justify-between ssm:w-[89%] md:w-[89%] xl:w-[86%] 3xl:w-[91%]">
+          <div className="flex items-center justify-between ssm:w-[89%] md:w-[89%] xl:w-[86%] 3xl:w-[91%] max-ssm:block">
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <h1 className="text-white text-2xl">
@@ -62,18 +66,18 @@ const Channel = () => {
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <p className="text-gray-400 text-base font-medium">
+                <p className="text-gray-400 text-base font-medium max-ssm:text-xs">
                   {channel[0]?.snippet?.customUrl}
                 </p>
-                <p className="text-gray-400 text-sm">
+                <p className="text-gray-400 text-sm max-ssm:text-xs">
                   {channel[0]?.statistics?.subscriberCount} người đăng ký
                 </p>
-                <p className="text-gray-400 text-sm">
+                <p className="text-gray-400 text-sm max-ssm:text-xs">
                   {channel[0]?.statistics?.videoCount} video
                 </p>
               </div>
             </div>
-            <div className="flex rounded-md shadow-sm">
+            <div className="flex rounded-md shadow-sm max-ssm:py-2">
               <button
                 type="button"
                 className="px-4 py-2 my-auto text-sm font-medium text-white bg-[#2f2e2f]  rounded-3xl hover:opacity-90"
@@ -142,7 +146,7 @@ const Channel = () => {
           </ul>
         </div>
 
-        <div className="py-8">
+        <div className="py-8 h-screen max-ssm:h-full">
           {isSel === 0 ? (
             <div className="grid sm:grid-col-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 3xl:grid-cols-5 items-baseline gap-5 mx-auto px-16">
               {channelVideos?.map((video) => {
@@ -160,7 +164,7 @@ const Channel = () => {
                   >
                     <div>
                       <img
-                        className="rounded-xl hover:scale-105 transition-all duration-300 hover:duration-300"
+                        className="rounded-xl hover:scale-105 transition-all duration-300 hover:duration-300 max-h-44 w-full object-cover"
                         src={video?.snippet?.thumbnails?.medium?.url}
                         alt={video?.snippet?.description}
                       />
@@ -186,8 +190,12 @@ const Channel = () => {
                           <div>
                             <img
                               className="rounded-[50%] w-8"
-                              src={channel[0]?.snippet?.thumbnails?.high?.url}
-                              alt={channel[0]?.snippet?.thumbnails?.high?.url}
+                              src={
+                                channel[0]?.snippet?.thumbnails?.default?.url
+                              }
+                              alt={
+                                channel[0]?.snippet?.thumbnails?.default?.url
+                              }
                             />
                           </div>
                           <p className="mb-1 font-normal text-sm text-gray-400 ">
@@ -198,7 +206,7 @@ const Channel = () => {
                           </div>
                         </div>
                       </Tooltip>
-                      <p className="mb-1 font-normal text-sm text-gray-400">
+                      <p className="mt-2 font-normal text-sm text-gray-400">
                         Ngày tải lên{" "}
                         {dateFormat(video?.snippet?.publishTime, "dd/mm/yyyy")}
                       </p>

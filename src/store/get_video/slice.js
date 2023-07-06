@@ -16,6 +16,7 @@ const initialState = {
   videoWatched: localVidWatched || [],
   videoLiked: localVidLiked || [],
   videoWatchLater: localVidWatchLater || [],
+  isVideoExist: false,
   isLoading: false,
 };
 
@@ -41,11 +42,21 @@ const manageVideoSlice = createSlice({
       }
     },
     getVideoWatchLater: (state, action) => {
-      state.videoWatchLater.push(action.payload);
-      localStorage.setItem(
-        "videoWatchLater",
-        JSON.stringify(state.videoWatchLater)
+      // find id video in playlist later watch
+      const indexLater = state.videoWatchLater?.findIndex(
+        (video) => video.id === action.payload.id
       );
+      const idVidLater = indexLater > -1 ? true : false;
+      if (!idVidLater) {
+        state.videoWatchLater.push(action.payload);
+        state.isVideoExist = false;
+        localStorage.setItem(
+          "videoWatchLater",
+          JSON.stringify(state.videoWatchLater)
+        );
+      } else {
+        state.isVideoExist = true;
+      }
     },
     removeVideoWatchLater: (state, action) => {
       const indexLiked = state?.videoWatchLater?.findIndex(

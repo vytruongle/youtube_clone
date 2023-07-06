@@ -31,20 +31,22 @@ import {
   getVideoWatched,
   removeVideoLiked,
 } from "../store/get_video/slice";
-
-// css
-import styles from "../scss/VideoDetail.module.scss";
 import {
   getChannelRegsiter,
   removeChannelRegister,
 } from "../store/get_channel/slice";
+import { toast, ToastContainer } from "react-toastify";
+// css
+import styles from "../scss/VideoDetail.module.scss";
+import "react-toastify/dist/ReactToastify.css";
 
 const VideoDetail = () => {
   let { videoId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isAppear, setIsAppear] = useState(false);
-  const { videoDetail, videos, videoComment } = useSelector(
+  const [isClick, setIsClick] = useState(false);
+  const { videoDetail, videos, videoComment, isVideoExist } = useSelector(
     (state) => state.manageVideos
   );
   const { channel, channelRegsitered } = useSelector(
@@ -53,10 +55,6 @@ const VideoDetail = () => {
   const vid = videoDetail[0];
   const localVidWatched = JSON.parse(localStorage.getItem("videoWatched"));
   const localVidLiked = JSON.parse(localStorage.getItem("videoLiked"));
-  const localVidWatchLater = JSON.parse(
-    localStorage.getItem("videoWatchLater")
-  );
-
   // console.log(vid?.snippet?.channelId);
   // console.log(channel);
 
@@ -66,17 +64,25 @@ const VideoDetail = () => {
   // find id video in playlist liked
   const indexLiked = localVidLiked?.findIndex((video) => video.id === vid?.id);
   const idVidLike = indexLiked > -1 ? true : false;
-  // find id video in playlist later watch
-  const indexLater = localVidWatchLater?.findIndex(
-    (video) => video.id === vid?.id
-  );
-  const idVidLater = indexLater > -1 ? true : false;
   // find id channel in playlist channel register
   const indexChannel = channelRegsitered?.findIndex(
     (channel) => channel.channelId === vid?.snippet?.channelId
   );
   const idChannelReg = indexChannel > -1 ? true : false;
-  console.log(idChannelReg);
+
+  // setting toast display
+  toast.success("Thêm vào danh sách thành công", {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+    toastId: "success-added",
+  });
+
   useEffect(() => {
     dispatch(
       getVideoDetails({
@@ -303,8 +309,8 @@ const VideoDetail = () => {
             >
               {videoComment?.map((cmt) => {
                 return (
-                  <div className="flex gap-3 py-4" key={cmt.id}>
-                    <div className="basis-[5%]">
+                  <div className="flex gap-4 py-4" key={cmt.id}>
+                    <div className=" cursor-pointer">
                       <img
                         className="w-10 rounded-[50%]"
                         src={
@@ -315,11 +321,23 @@ const VideoDetail = () => {
                           cmt?.snippet?.topLevelComment?.snippet
                             .authorDisplayName
                         }
+                        onClick={() => {
+                          navigate(
+                            `/${cmt.snippet?.topLevelComment?.snippet?.authorChannelId?.value}/${cmt?.snippet?.topLevelComment?.snippet.authorDisplayName}`
+                          );
+                        }}
                       />
                     </div>
-                    <div className="basis-[95%] flex flex-col gap-3">
+                    <div className=" flex flex-col gap-1">
                       <div className="flex items-center gap-3">
-                        <h4 className="text-white text-sm">
+                        <h4
+                          className="text-white text-sm font-semibold cursor-pointer"
+                          onClick={() => {
+                            navigate(
+                              `/${cmt.snippet?.topLevelComment?.snippet?.authorChannelId?.value}/${cmt?.snippet?.topLevelComment?.snippet.authorDisplayName}`
+                            );
+                          }}
+                        >
                           {
                             cmt?.snippet?.topLevelComment?.snippet
                               .authorDisplayName
@@ -373,7 +391,9 @@ const VideoDetail = () => {
             </div>
           </div>
           <div>
-            <div className="grid 2xl:grid-cols-1 items-baseline gap-2 mx-auto justify-end  max-sssm:grid-cols-3 max-ssm:grid-cols-3 max-sm:grid-cols-3 max-md:grid-cols-3 xl:grid-cols-3">
+            {!isVideoExist && isClick ? <ToastContainer /> : null}
+            {console.log(isClick, isVideoExist)}
+            <div className="grid 2xl:grid-cols-1 items-baseline gap-3 mx-auto justify-end  max-sssm:grid-cols-3 max-ssm:grid-cols-3 max-sm:grid-cols-3 max-md:grid-cols-3 xl:grid-cols-3">
               {videos?.map((video) => {
                 return (
                   <div
@@ -384,7 +404,7 @@ const VideoDetail = () => {
                       className={clsx(styles.thumbnails, "basis-1/2 relative")}
                     >
                       <img
-                        className="rounded-md hover:scale-105 transition-all duration-300 hover:duration-300 w-44"
+                        className="rounded-md hover:scale-105 transition-all duration-300 hover:duration-300 w-[95%]"
                         src={video?.snippet?.thumbnails?.medium?.url}
                         alt={video?.snippet?.description}
                         onClick={() => {
@@ -394,10 +414,10 @@ const VideoDetail = () => {
                       <div
                         className={clsx(
                           styles.clockIcon,
-                          "absolute top-0 right-[15%] text-white text-lg bg-[#2f2e2f] rounded-md px-2 py-1 my-1 bg-opacity-50"
+                          "absolute top-0 right-[5%] text-white text-lg bg-[#2f2e2f] rounded-md px-2 py-1 my-1 bg-opacity-50"
                         )}
                         onClick={() => {
-                          if (!idVidLater) {
+                          if (!isVideoExist) {
                             dispatch(
                               getVideoWatchLater({
                                 id: video?.id?.videoId,
@@ -410,6 +430,9 @@ const VideoDetail = () => {
                                 description: video?.snippet?.description,
                               })
                             );
+                            setIsClick(true);
+                          } else {
+                            setIsClick(false);
                           }
                         }}
                       >

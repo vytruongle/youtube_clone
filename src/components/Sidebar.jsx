@@ -28,7 +28,7 @@ const Sidebar = () => {
   const [isBlur, setBlur] = useState(false);
   const [isHide, setIsHide] = useState(true);
   const { channelRegsitered } = useSelector((state) => state.manageChannels);
-  console.log(useLocation());
+  // console.log(useLocation());
   return (
     <div>
       <div className="block">
