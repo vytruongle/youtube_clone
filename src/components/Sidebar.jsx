@@ -28,7 +28,7 @@ const Sidebar = () => {
   const [isBlur, setBlur] = useState(false);
   const [isHide, setIsHide] = useState(true);
   const { channelRegsitered } = useSelector((state) => state.manageChannels);
-
+  console.log(useLocation());
   return (
     <div>
       <div className="block">
@@ -160,6 +160,7 @@ const Sidebar = () => {
                     {channelRegsitered?.map((channel) => {
                       return (
                         <li
+                          key={channel?.channelId}
                           className={
                             `/${channel?.channelId}/@${channel?.channelTitle}` ===
                             location
