@@ -43,11 +43,11 @@ const Channel = () => {
             alt={channel[0]?.brandingSettings?.image?.bannerExternalUrl}
           />
         ) : (
-          <div className="w-full bg-black"></div>
+          <div className="w-full h-full bg-black"></div>
         )}
       </div>
       <div className="3xl:max-w-screen-3xl 2xl:max-w-screen-2xl xl:max-w-screen-xl lg:max-w-screen-lg md:max-w-screen-md sm:max-w-screen-sm ssm:max-w-screen-ssm mx-auto p-4">
-        <div className="py-4 px-8 flex  items-center gap-6">
+        <div className="py-4 px-8 flex items-center gap-6">
           <div>
             <img
               className="rounded-[50%] w-32 max-ssm:w-24"
@@ -146,7 +146,13 @@ const Channel = () => {
           </ul>
         </div>
 
-        <div className="py-8 h-screen max-ssm:h-full">
+        <div
+          className={
+            channelVideos.length > 10
+              ? "py-8 h-full max-ssm:h-full"
+              : "py-8 h-screen"
+          }
+        >
           {isSel === 0 ? (
             <div className="grid sm:grid-col-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 3xl:grid-cols-5 items-baseline gap-5 mx-auto px-16">
               {channelVideos?.map((video) => {
