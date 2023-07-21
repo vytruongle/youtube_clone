@@ -29,53 +29,55 @@ const Home = () => {
 
   if (isLoading) {
     return (
-      <div className={clsx(styles.container)}>
-        <div className={clsx(styles.top)}>
-          <div className={clsx(styles.square)}>
+      <div className="h-screen w-full bg-black">
+        <div className={clsx(styles.container)}>
+          <div className={clsx(styles.top)}>
             <div className={clsx(styles.square)}>
               <div className={clsx(styles.square)}>
                 <div className={clsx(styles.square)}>
                   <div className={clsx(styles.square)}>
-                    <div className={clsx(styles.square)}></div>
+                    <div className={clsx(styles.square)}>
+                      <div className={clsx(styles.square)}></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className={clsx(styles.bottom)}>
-          <div className={clsx(styles.square)}>
+          <div className={clsx(styles.bottom)}>
             <div className={clsx(styles.square)}>
               <div className={clsx(styles.square)}>
                 <div className={clsx(styles.square)}>
                   <div className={clsx(styles.square)}>
-                    <div className={clsx(styles.square)}></div>
+                    <div className={clsx(styles.square)}>
+                      <div className={clsx(styles.square)}></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className={clsx(styles.left)}>
-          <div className={clsx(styles.square)}>
+          <div className={clsx(styles.left)}>
             <div className={clsx(styles.square)}>
               <div className={clsx(styles.square)}>
                 <div className={clsx(styles.square)}>
                   <div className={clsx(styles.square)}>
-                    <div className={clsx(styles.square)}></div>
+                    <div className={clsx(styles.square)}>
+                      <div className={clsx(styles.square)}></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className={clsx(styles.right)}>
-          <div className={clsx(styles.square)}>
+          <div className={clsx(styles.right)}>
             <div className={clsx(styles.square)}>
               <div className={clsx(styles.square)}>
                 <div className={clsx(styles.square)}>
                   <div className={clsx(styles.square)}>
-                    <div className={clsx(styles.square)}></div>
+                    <div className={clsx(styles.square)}>
+                      <div className={clsx(styles.square)}></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -87,7 +89,7 @@ const Home = () => {
   }
 
   return (
-    <div className={isLoading ? "bg-black h-[100vh]" : "bg-black h-full pt-16"}>
+    <div className={isLoading ? "bg-black h-screen" : "bg-black h-full pt-16"}>
       <div className="3xl:max-w-screen-3xl 2xl:max-w-screen-2xl xl:max-w-screen-xl lg:max-w-screen-lg md:max-w-screen-md sm:max-w-screen-sm ssm:max-w-screen-ssm flex flex-wrap items-center justify-between mx-auto p-4">
         <div className="grid sm:grid-col-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 3xl:grid-cols-5 items-baseline gap-5 mx-auto px-8">
           {videos?.map((video) => {

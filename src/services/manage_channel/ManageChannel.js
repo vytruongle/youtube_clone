@@ -19,6 +19,7 @@ export const ManageChannel = {
         channelId: query,
         part: "snippet,id",
         maxResults: "50",
+        order: "date",
       },
     });
   },

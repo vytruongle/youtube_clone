@@ -8,66 +8,71 @@ import clsx from "clsx";
 // css loading
 import styles from "../scss/loading/loading.module.scss";
 import { Tooltip } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Search = () => {
   let { q } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { search } = useSelector((state) => state.manageSearchResults);
-  const { isLoading } = useSelector((state) => state.manageVideos);
+  const { search, isLoading } = useSelector(
+    (state) => state.manageSearchResults
+  );
 
   useEffect(() => {
     dispatch(getSearchResults(q));
   }, [dispatch, q]);
   if (isLoading) {
     return (
-      <div className={clsx(styles.container)}>
-        <div className={clsx(styles.top)}>
-          <div className={clsx(styles.square)}>
+      <div className="h-screen w-full bg-black">
+        <div className={clsx(styles.container)}>
+          <div className={clsx(styles.top)}>
             <div className={clsx(styles.square)}>
               <div className={clsx(styles.square)}>
                 <div className={clsx(styles.square)}>
                   <div className={clsx(styles.square)}>
-                    <div className={clsx(styles.square)}></div>
+                    <div className={clsx(styles.square)}>
+                      <div className={clsx(styles.square)}></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className={clsx(styles.bottom)}>
-          <div className={clsx(styles.square)}>
+          <div className={clsx(styles.bottom)}>
             <div className={clsx(styles.square)}>
               <div className={clsx(styles.square)}>
                 <div className={clsx(styles.square)}>
                   <div className={clsx(styles.square)}>
-                    <div className={clsx(styles.square)}></div>
+                    <div className={clsx(styles.square)}>
+                      <div className={clsx(styles.square)}></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className={clsx(styles.left)}>
-          <div className={clsx(styles.square)}>
+          <div className={clsx(styles.left)}>
             <div className={clsx(styles.square)}>
               <div className={clsx(styles.square)}>
                 <div className={clsx(styles.square)}>
                   <div className={clsx(styles.square)}>
-                    <div className={clsx(styles.square)}></div>
+                    <div className={clsx(styles.square)}>
+                      <div className={clsx(styles.square)}></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className={clsx(styles.right)}>
-          <div className={clsx(styles.square)}>
+          <div className={clsx(styles.right)}>
             <div className={clsx(styles.square)}>
               <div className={clsx(styles.square)}>
                 <div className={clsx(styles.square)}>
                   <div className={clsx(styles.square)}>
-                    <div className={clsx(styles.square)}></div>
+                    <div className={clsx(styles.square)}>
+                      <div className={clsx(styles.square)}></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -79,7 +84,7 @@ const Search = () => {
   }
 
   return (
-    <div className={isLoading ? "bg-black h-[100vh]" : "bg-black h-full pt-16"}>
+    <div className={isLoading ? "bg-black h-screen" : "bg-black h-full pt-16"}>
       <div className="3xl:max-w-screen-3xl 2xl:max-w-screen-2xl xl:max-w-screen-xl lg:max-w-screen-lg md:max-w-screen-md sm:max-w-screen-sm ssm:max-w-screen-ssm mx-auto p-4">
         <div className="grid grid-col-1 items-baseline gap-5 mx-auto px-8">
           {search?.map((video) => {
@@ -90,7 +95,7 @@ const Search = () => {
               >
                 <div className="basis-1/4">
                   <img
-                    className="rounded-xl hover:scale-105 transition-all duration-300 hover:duration-300"
+                    className="rounded-xl hover:scale-105 transition-all duration-300 hover:duration-300 w-full object-cover max-h-44"
                     src={video?.snippet?.thumbnails?.medium?.url}
                     alt={video?.snippet?.description}
                     onClick={() => {
@@ -140,6 +145,9 @@ const Search = () => {
                       }}
                     >
                       {video?.snippet?.channelTitle}
+                      <span className="text-xs ml-1">
+                        <FontAwesomeIcon icon={faCheckCircle} />
+                      </span>
                     </p>
                   </Tooltip>
                   <p

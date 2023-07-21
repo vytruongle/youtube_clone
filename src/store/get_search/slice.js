@@ -17,7 +17,7 @@ const manageSearchSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getSearchResults.fulfilled, (state, action) => {
-        state.isLoading = true;
+        state.isLoading = false;
         state.search = action.payload.items;
       })
       .addCase(getSearchResults.rejected, (state) => {

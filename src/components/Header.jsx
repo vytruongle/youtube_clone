@@ -16,7 +16,7 @@ const Header = () => {
               <input
                 type="search"
                 id="search-dropdown"
-                className="block p-2.5 w-full z-20 text-sm text-white bg-black rounded-l-3xl rounded-r-3xl border-l-gray-600 border-l-2 border border-gray-600 focus:ring-blue-700 focus:border-blue-700"
+                className="block p-2.5 w-full z-20 text-sm text-white bg-black rounded-l-3xl rounded-r-3xl border-l-gray-600 border-l-2 border border-gray-600 focus:ring-blue-700 focus:border-blue-900"
                 placeholder="Tìm kiếm"
                 required
                 onChange={(e) => {

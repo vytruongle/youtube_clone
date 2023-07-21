@@ -10,7 +10,6 @@ export const ManageSearch = {
         part: "snippet,id",
         regionCode: "VN",
         maxResults: "100",
-        order: "date",
       },
     });
   },
